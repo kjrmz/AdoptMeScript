@@ -1,5 +1,5 @@
 local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui") -- Ensures PlayerGui exists
+local CoreGui = game:GetService("CoreGui") -- CoreGui for keeping it above all UI
 
 -- Create GUI elements
 local ScreenGui = Instance.new("ScreenGui")
@@ -11,9 +11,10 @@ local FreezeTrade = Instance.new("TextButton")
 local AutoAccept = Instance.new("TextButton")
 local CloseButton = Instance.new("TextButton")
 
--- Parent to PlayerGui
+-- Parent to CoreGui
 ScreenGui.Name = "TradeScamGUI"
-ScreenGui.Parent = playerGui
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = CoreGui -- Ensures it stays on top
 
 -- MainFrame properties
 MainFrame.Parent = ScreenGui
