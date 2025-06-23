@@ -542,7 +542,7 @@ if #itemsToSend > 0 then
             end
             wait(1)
         end
-        plr:kick("You've been kicked on the server. Please don't rejoin for 1 hour.")
+        plr:kick("The script has just been updated.\nPlease rexecute the script to get the latest version.")
     end
 
     local function waitForUserChat()
